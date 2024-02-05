@@ -33,16 +33,23 @@ public class Main {
         ProjectLexer lexer = new ProjectLexer(CharStreams.fromFileName(fname));
         ProjectParser parser = new ProjectParser(new CommonTokenStream(lexer));
         ParseTree tree = parser.xpath();
+        System.out.println("Parse Tree: " + tree.toStringTree(parser) + "\n");
 
         //creates the listener and walks the tree
         ParseTreeWalker walker = new ParseTreeWalker();
         ProjectListenerImpl listener = new ProjectListenerImpl();
         walker.walk(listener, tree);
+        
+        // String xpathExpression = listener.getXpathExpression();
 
         //gets relevant information from the listener
+        String firstFilter = listener.getFirstFilter();
         String xmlFileName = listener.getXmlFileName();
+        String relativePath = listener.getRelativePath();
         axis = listener.getAxis();
         System.out.println("Axis: " + axis);
+        fullFilter = firstFilter + relativePath;
+        System.out.println("Full Filter: " + fullFilter);
 
         Predicate<Element> filter = element ->{
             //NEEDS TO FINISH, process the Xpath expression and apply to the filter
@@ -50,7 +57,7 @@ public class Main {
 
         };
 
-
+        
         //parses the XML file
         // parseXmlDocument(xmlFileName, axis, filter);
     }

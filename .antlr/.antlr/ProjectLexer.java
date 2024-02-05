@@ -1,4 +1,4 @@
-// Generated from c:/Users/trieu/.antlr/.antlr/Project.g by ANTLR 4.13.1
+// Generated from c:/Users/trieu/XpathProject/.antlr/Project.g by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

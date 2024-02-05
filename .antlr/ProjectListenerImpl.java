@@ -4,9 +4,25 @@ public class ProjectListenerImpl extends ProjectBaseListener{
     private String xmlFileName;
     private String fullFilter = "";
     private List<String> tagNames = new ArrayList<>();
-    private List<String> relativePaths = new ArrayList<>();
+    private String relativePath = "";
+    private boolean relativePathBool = true;
     private String axis = "";
     private boolean firstPath = true;
+    private String firstFilter = "";
+    private boolean firstFilterBool = true;
+    
+    @Override public void enterDescendOrSelf(ProjectParser.DescendOrSelfContext ctx) {
+        if (firstFilterBool) {
+            firstFilter = ctx.getText();
+            firstFilterBool = false;
+        }
+    }
+    @Override public void enterChildNode(ProjectParser.ChildNodeContext ctx) {
+        if(firstFilterBool) {
+            firstFilter = ctx.getText();
+            firstFilterBool = false;
+        }
+    }
 
     @Override
     public void enterXpath(ProjectParser.XpathContext ctx) {
@@ -29,7 +45,10 @@ public class ProjectListenerImpl extends ProjectBaseListener{
     public void enterRelativePath(ProjectParser.RelativePathContext ctx) {
         
         System.out.println("enterRelativePath "+ ctx.getText());
-        relativePaths.add(ctx.getText());
+        if(relativePathBool) {
+            relativePath = ctx.getText();
+            relativePathBool = false;
+        }
     }
     @Override
     public void enterFileName(ProjectParser.FileNameContext ctx) {
@@ -54,8 +73,8 @@ public class ProjectListenerImpl extends ProjectBaseListener{
         return xmlFileName;
     }
 
-    public List<String> getRelativePaths() {
-        return relativePaths;
+    public String getRelativePath() {
+        return relativePath;
     }
     public String getAxis() {
         return axis;
@@ -65,6 +84,9 @@ public class ProjectListenerImpl extends ProjectBaseListener{
     }
     public String getPathFilters() {
         return fullFilter;
+    }
+    public String getFirstFilter() {
+        return firstFilter;
     }
 
 }

@@ -1,4 +1,4 @@
-// Generated from c:/Users/trieu/.antlr/.antlr/Project.g by ANTLR 4.13.1
+// Generated from c:/Users/trieu/XpathProject/.antlr/Project.g by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -117,6 +117,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_xpath; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterXpath(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitXpath(this);
+		}
 	}
 
 	public final XpathContext xpath() throws RecognitionException {
@@ -185,6 +193,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_absolutePath; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAbsolutePath(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAbsolutePath(this);
+		}
 	}
 
 	public final AbsolutePathContext absolutePath() throws RecognitionException {
@@ -281,6 +297,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_relativePath; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterRelativePath(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitRelativePath(this);
+		}
 	}
 
 	public final RelativePathContext relativePath() throws RecognitionException {
@@ -478,6 +502,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pathFilter; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterPathFilter(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitPathFilter(this);
+		}
 	}
 
 	public final PathFilterContext pathFilter() throws RecognitionException {
@@ -642,6 +674,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tagName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterTagName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitTagName(this);
+		}
 	}
 
 	public final TagNameContext tagName() throws RecognitionException {
@@ -672,6 +712,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fileName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterFileName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitFileName(this);
+		}
 	}
 
 	public final FileNameContext fileName() throws RecognitionException {
@@ -702,6 +750,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_is; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterIs(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitIs(this);
+		}
 	}
 
 	public final IsContext is() throws RecognitionException {
@@ -732,6 +788,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_and; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAnd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAnd(this);
+		}
 	}
 
 	public final AndContext and() throws RecognitionException {
@@ -762,6 +826,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_or; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterOr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitOr(this);
+		}
 	}
 
 	public final OrContext or() throws RecognitionException {
@@ -792,6 +864,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_not; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterNot(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitNot(this);
+		}
 	}
 
 	public final NotContext not() throws RecognitionException {
@@ -825,6 +905,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparisonString; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterComparisonString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitComparisonString(this);
+		}
 	}
 
 	public final ComparisonStringContext comparisonString() throws RecognitionException {
@@ -874,6 +962,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparisonNumber; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterComparisonNumber(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitComparisonNumber(this);
+		}
 	}
 
 	public final ComparisonNumberContext comparisonNumber() throws RecognitionException {
@@ -904,6 +1000,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_attributeName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAttributeName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAttributeName(this);
+		}
 	}
 
 	public final AttributeNameContext attributeName() throws RecognitionException {
@@ -934,6 +1038,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_axisSpecifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAxisSpecifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAxisSpecifier(this);
+		}
 	}
 
 	public final AxisSpecifierContext axisSpecifier() throws RecognitionException {
@@ -964,6 +1076,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_descendOrSelf; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterDescendOrSelf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitDescendOrSelf(this);
+		}
 	}
 
 	public final DescendOrSelfContext descendOrSelf() throws RecognitionException {
@@ -994,6 +1114,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_childNode; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterChildNode(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitChildNode(this);
+		}
 	}
 
 	public final ChildNodeContext childNode() throws RecognitionException {
@@ -1024,6 +1152,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_equals; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterEquals(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitEquals(this);
+		}
 	}
 
 	public final EqualsContext equals() throws RecognitionException {
@@ -1054,6 +1190,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_twoEquals; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterTwoEquals(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitTwoEquals(this);
+		}
 	}
 
 	public final TwoEqualsContext twoEquals() throws RecognitionException {
@@ -1084,6 +1228,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_all; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAll(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAll(this);
+		}
 	}
 
 	public final AllContext all() throws RecognitionException {
@@ -1114,6 +1266,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_self; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterSelf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitSelf(this);
+		}
 	}
 
 	public final SelfContext self() throws RecognitionException {
@@ -1144,6 +1304,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_parent; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterParent(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitParent(this);
+		}
 	}
 
 	public final ParentContext parent() throws RecognitionException {
@@ -1174,6 +1342,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_text; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterText(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitText(this);
+		}
 	}
 
 	public final TextContext text() throws RecognitionException {
