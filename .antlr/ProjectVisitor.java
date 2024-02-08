@@ -10,29 +10,166 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface ProjectVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#xpath}.
+	 * Visit a parse tree produced by the {@code childAP}
+	 * labeled alternative in {@link ProjectParser#ap}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitXpath(ProjectParser.XpathContext ctx);
+	T visitChildAP(ProjectParser.ChildAPContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#absolutePath}.
+	 * Visit a parse tree produced by the {@code descendAP}
+	 * labeled alternative in {@link ProjectParser#ap}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAbsolutePath(ProjectParser.AbsolutePathContext ctx);
+	T visitDescendAP(ProjectParser.DescendAPContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#relativePath}.
+	 * Visit a parse tree produced by the {@code docName}
+	 * labeled alternative in {@link ProjectParser#doc}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelativePath(ProjectParser.RelativePathContext ctx);
+	T visitDocName(ProjectParser.DocNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#pathFilter}.
+	 * Visit a parse tree produced by the {@code attrRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPathFilter(ProjectParser.PathFilterContext ctx);
+	T visitAttrRP(ProjectParser.AttrRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code childRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChildRP(ProjectParser.ChildRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code filterPath}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFilterPath(ProjectParser.FilterPathContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code textRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextRP(ProjectParser.TextRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parentRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParentRP(ProjectParser.ParentRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code unionRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnionRP(ProjectParser.UnionRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code selfRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelfRP(ProjectParser.SelfRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code childrenRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChildrenRP(ProjectParser.ChildrenRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code tagRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTagRP(ProjectParser.TagRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code descendRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDescendRP(ProjectParser.DescendRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenRP}
+	 * labeled alternative in {@link ProjectParser#rp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenRP(ProjectParser.ParenRPContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code rpPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRpPF(ProjectParser.RpPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code equalsPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualsPF(ProjectParser.EqualsPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenPF(ProjectParser.ParenPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code andPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndPF(ProjectParser.AndPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringPF(ProjectParser.StringPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code samePF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSamePF(ProjectParser.SamePFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code notPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotPF(ProjectParser.NotPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code equalPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualPF(ProjectParser.EqualPFContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code orPF}
+	 * labeled alternative in {@link ProjectParser#pf}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrPF(ProjectParser.OrPFContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ProjectParser#tagName}.
 	 * @param ctx the parse tree
@@ -40,105 +177,21 @@ public interface ProjectVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTagName(ProjectParser.TagNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#fileName}.
+	 * Visit a parse tree produced by {@link ProjectParser#attrName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFileName(ProjectParser.FileNameContext ctx);
+	T visitAttrName(ProjectParser.AttrNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ProjectParser#is}.
+	 * Visit a parse tree produced by {@link ProjectParser#filename}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIs(ProjectParser.IsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#and}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnd(ProjectParser.AndContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#or}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOr(ProjectParser.OrContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#not}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(ProjectParser.NotContext ctx);
+	T visitFilename(ProjectParser.FilenameContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ProjectParser#comparisonString}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitComparisonString(ProjectParser.ComparisonStringContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#comparisonNumber}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitComparisonNumber(ProjectParser.ComparisonNumberContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#attributeName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAttributeName(ProjectParser.AttributeNameContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#axisSpecifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAxisSpecifier(ProjectParser.AxisSpecifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#descendOrSelf}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDescendOrSelf(ProjectParser.DescendOrSelfContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#childNode}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitChildNode(ProjectParser.ChildNodeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#equals}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEquals(ProjectParser.EqualsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#twoEquals}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTwoEquals(ProjectParser.TwoEqualsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#all}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAll(ProjectParser.AllContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#self}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSelf(ProjectParser.SelfContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#parent}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParent(ProjectParser.ParentContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ProjectParser#text}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitText(ProjectParser.TextContext ctx);
 }
