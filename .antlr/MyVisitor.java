@@ -37,7 +37,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
             for(Node node : filtered){
                 if(availNodes.contains(node)){
                     last.add(node);
-                    System.out.println(node);
+
                 }
             }
             availNodes = last;
@@ -50,7 +50,6 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
     @Override
     public List<Node> visitDescendAP(ProjectParser.DescendAPContext ctx){ //change nodes to all available element nodes
         if(doc !=null){
-            System.out.println("Visiting DescendAP " + ctx.getText());
             List<Node> temp = new ArrayList<Node>();
             for( Node node : availNodes){
                 temp.add(node);
@@ -62,7 +61,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
             for(Node node : filtered){
                 if(availNodes.contains(node)){
                     last.add(node);
-                    System.out.println(node);
+
                 }
             }
             availNodes = last;
@@ -75,7 +74,6 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     public List<Node> visitTagName(ProjectParser.TagNameContext ctx){
         if(doc != null){
-            System.out.println("Visiting TagName " + ctx.getText());
             String tag = ctx.getText();
             List<Node> newAvailNodes = filterNodes(tag);
             
@@ -86,7 +84,6 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
     
     public List<Node> visitChildrenRP(ProjectParser.ChildrenRPContext ctx){ //change nodes to only children nodes
         if(doc != null){
-            System.out.println("Visiting ChildrenRP " + ctx.getText());
             List<Node> temp = new ArrayList<Node>();
             for(Node node : availNodes){
                 temp.addAll(getChildren(node));
@@ -152,7 +149,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     public List<Node> visitChildRP(ProjectParser.ChildRPContext ctx){
         if(doc!=null){
-            System.out.println("Visiting ChildRP " + ctx.getText());
+
             ProjectParser.RpContext rp = ctx.rp(0);
             
             ProjectParser.RpContext rp2 = ctx.rp(1);
@@ -178,7 +175,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     public List<Node> visitDescendRP(ProjectParser.DescendRPContext ctx){
         if(doc!=null){
-            System.out.println("Visiting ChildRP " + ctx.getText());
+
             ProjectParser.RpContext rp = ctx.rp(0);
             
             ProjectParser.RpContext rp2 = ctx.rp(1);
@@ -188,7 +185,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
                 temp.addAll(getDescendants(node));
             }
             availNodes = temp;
-            System.out.println(availNodes);
+
             List<Node> temp2 = new ArrayList<Node>();
             List<Node> secondRP = visit(rp2);
             for(Node node : secondRP){
@@ -205,15 +202,15 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     public List<Node> visitFilterPath(ProjectParser.FilterPathContext ctx){
         if(doc != null){
-            System.out.println("Visiting FilterPath " + ctx.getText());
             
-            List<Node> temp = visit(ctx.rp());
-            System.out.println(temp);
+            List<Node> temp = availNodes;
+            List<Node> rp1 = visit(ctx.rp());
+          
             List<Node> filtered = visit(ctx.pf());
 
-            System.out.println(filtered);
+            
             List<Node> last = new ArrayList<Node>();
-            for(Node node : temp){
+            for(Node node : rp1){
                 if(hasFilteredDescendant(node, filtered)){
                     last.add(node);
                 }
@@ -221,6 +218,29 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
             availNodes = temp;
             return last;
 
+        }
+        return visitChildren(ctx);
+    }
+
+    public List<Node> visitAndPF(ProjectParser.AndPFContext ctx) {
+        if (doc != null) {
+           
+            List<Node> temp = availNodes;
+            availNodes = getAllChildren(availNodes);
+            List<Node> pf1 = visit(ctx.pf(0));
+           
+            availNodes = getAllChildren(temp);
+            
+            List<Node> pf2 = visit(ctx.pf(1));
+            
+            List<Node> together = new ArrayList<>();
+            availNodes = temp;
+            for (Node node :availNodes){
+                if((hasFilteredDescendant(node, pf1) && hasFilteredDescendant(node, pf2)) && !together.contains(node)){
+                    together.add(node);
+                }
+            }
+            return together;
         }
         return visitChildren(ctx);
     }
@@ -245,7 +265,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     public List<Node> visitUnionRP(ProjectParser.UnionRPContext ctx){
         if(doc != null){
-            System.out.println("Visiting UnionRP " + ctx.getText());
+            
             ProjectParser.RpContext rp = ctx.rp(0);
             ProjectParser.RpContext rp2 = ctx.rp(1);
             List<Node> firstRP = visit(rp);
@@ -372,46 +392,18 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
         return visitChildren(ctx);
     }
 
-    public List<Node> visitAndPF(ProjectParser.AndPFContext ctx) {
-        if (doc != null) {
-            System.out.println("Visiting AndPF " + ctx.getText());
-            System.out.println("visiting first pf");
-            System.out.println(availNodes);
-            List<Node> temp = availNodes;
-            availNodes = getAllChildren(availNodes);
-            List<Node> pf1 = visit(ctx.pf(0));
-            System.out.println(pf1);
-            System.out.println("visiting second pf");
-            availNodes = getAllChildren(temp);
-            System.out.println(availNodes.size());
-            List<Node> pf2 = visit(ctx.pf(1));
-            System.out.println(pf2);
-            List<Node> together = new ArrayList<>();
-            availNodes = temp;
-            for (Node node :availNodes){
-                if((hasFilteredDescendant(node, pf1) && hasFilteredDescendant(node, pf2)) && !together.contains(node)){
-                    together.add(node);
-                }
-            }
-            return together;
-        }
-        return visitChildren(ctx);
-    }
+
 
     public List<Node> visitOrPF(ProjectParser.OrPFContext ctx) {
         if (doc != null) {
-            System.out.println("Visiting AndPF " + ctx.getText());
-            System.out.println("visiting first pf");
-            System.out.println(availNodes);
+
             List<Node> temp = availNodes;
             availNodes = getAllChildren(availNodes);
             List<Node> pf1 = visit(ctx.pf(0));
-            System.out.println(pf1);
-            System.out.println("visiting second pf");
+
             availNodes = getAllChildren(temp);
-            System.out.println(availNodes.size());
+
             List<Node> pf2 = visit(ctx.pf(1));
-            System.out.println(pf2);
             List<Node> together = new ArrayList<>();
             availNodes = temp;
             for (Node node :availNodes){
@@ -458,7 +450,6 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
 
     
     public List<Node> visitDocName(ProjectParser.DocNameContext ctx){
-        System.out.println("Visiting DocName " + ctx.getText());
         return visitChildren(ctx);
     }
 
@@ -479,7 +470,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
         return filename;
     }
     public void setDoc(Document doc){
-        System.out.println("Setting doc");
+
         this.doc = doc;
         Element temp = doc.createElement("DUMMY");
         temp.appendChild(doc.getDocumentElement());
