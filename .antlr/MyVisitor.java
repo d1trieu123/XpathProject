@@ -8,6 +8,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -479,7 +482,7 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
     }
     
     public void printNodes(){
-        prettyPrint(availNodes);
+        prettyPrintToFile(availNodes,"answer.txt");
     }
     
     public List<Node> getChildren(Node node){ //returns the all children of a node
@@ -517,39 +520,46 @@ public class MyVisitor extends ProjectBaseVisitor<List<Node>>{
         }
         return filteredNodes;
     }
-    public static void prettyPrint(List<Node> nodeList) { //prints a list of nodes in format
-    try {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-
-        // Create a new document for pretty printing
-        Document subdoc = builder.newDocument();
-        Element tempRootElement = subdoc.createElement("result"); // Create a temporary root element
-
-        for (Node node : nodeList) {
-            // Import the node into the subdocument
-            Node copy = subdoc.importNode(node, true);
-
-            // Append the imported node to the temporary root element
-            tempRootElement.appendChild(copy);
+    public static void prettyPrintToFile(List<Node> nodeList, String filePath) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+    
+            // Create a new document for pretty printing
+            Document subdoc = builder.newDocument();
+            Element tempRootElement = subdoc.createElement("result"); // Create a temporary root element
+    
+            for (Node node : nodeList) {
+                // Import the node into the subdocument
+                Node copy = subdoc.importNode(node, true);
+    
+                // Append the imported node to the temporary root element
+                tempRootElement.appendChild(copy);
+            }
+    
+            // Append the temporary root element to the subdocument
+            subdoc.appendChild(tempRootElement);
+    
+            // Prepare the output file
+            File outputFile = new File(filePath);
+            OutputStream outStream = new FileOutputStream(outputFile);
+    
+            // Print the formatted XML to the file
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty("indent", "yes");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+    
+            DOMSource source = new DOMSource(tempRootElement);
+            StreamResult result = new StreamResult(outStream);
+            transformer.transform(source, result);
+    
+            // Close the output stream
+            outStream.close();
+    
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Append the temporary root element to the subdocument
-        subdoc.appendChild(tempRootElement);
-
-        // Print the formatted XML to the console
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty("indent", "yes");
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-        DOMSource source = new DOMSource(tempRootElement);
-        StreamResult result = new StreamResult(System.out);
-        transformer.transform(source, result);
-
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
 }

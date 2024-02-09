@@ -117,6 +117,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,0);
 		}
 		public ChildAPContext(ApContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterChildAP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitChildAP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class DescendAPContext extends ApContext {
@@ -127,6 +135,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,0);
 		}
 		public DescendAPContext(ApContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterDescendAP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitDescendAP(this);
+		}
 	}
 
 	public final ApContext ap() throws RecognitionException {
@@ -193,6 +209,14 @@ public class ProjectParser extends Parser {
 		}
 		public TerminalNode ENDOC() { return getToken(ProjectParser.ENDOC, 0); }
 		public DocNameContext(DocContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterDocName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitDocName(this);
+		}
 	}
 
 	public final DocContext doc() throws RecognitionException {
@@ -239,6 +263,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(AttrNameContext.class,0);
 		}
 		public AttrRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAttrRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAttrRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ChildRPContext extends RpContext {
@@ -249,6 +281,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public ChildRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterChildRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitChildRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class FilterPathContext extends RpContext {
@@ -259,14 +299,38 @@ public class ProjectParser extends Parser {
 			return getRuleContext(PfContext.class,0);
 		}
 		public FilterPathContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterFilterPath(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitFilterPath(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class TextRPContext extends RpContext {
 		public TextRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterTextRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitTextRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParentRPContext extends RpContext {
 		public ParentRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterParentRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitParentRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class UnionRPContext extends RpContext {
@@ -277,14 +341,38 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public UnionRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterUnionRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitUnionRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SelfRPContext extends RpContext {
 		public SelfRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterSelfRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitSelfRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ChildrenRPContext extends RpContext {
 		public ChildrenRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterChildrenRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitChildrenRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class TagRPContext extends RpContext {
@@ -292,6 +380,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(TagNameContext.class,0);
 		}
 		public TagRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterTagRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitTagRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class DescendRPContext extends RpContext {
@@ -302,6 +398,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public DescendRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterDescendRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitDescendRP(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenRPContext extends RpContext {
@@ -309,6 +413,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,0);
 		}
 		public ParenRPContext(RpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterParenRP(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitParenRP(this);
+		}
 	}
 
 	public final RpContext rp() throws RecognitionException {
@@ -502,6 +614,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,0);
 		}
 		public RpPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterRpPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitRpPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class EqualsPFContext extends PfContext {
@@ -512,6 +632,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public EqualsPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterEqualsPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitEqualsPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenPFContext extends PfContext {
@@ -519,6 +647,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(PfContext.class,0);
 		}
 		public ParenPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterParenPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitParenPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AndPFContext extends PfContext {
@@ -529,6 +665,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(PfContext.class,i);
 		}
 		public AndPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAndPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAndPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class StringPFContext extends PfContext {
@@ -539,6 +683,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(ComparisonStringContext.class,0);
 		}
 		public StringPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterStringPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitStringPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SamePFContext extends PfContext {
@@ -549,6 +701,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public SamePFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterSamePF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitSamePF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NotPFContext extends PfContext {
@@ -556,6 +716,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(PfContext.class,0);
 		}
 		public NotPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterNotPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitNotPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class EqualPFContext extends PfContext {
@@ -566,6 +734,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(RpContext.class,i);
 		}
 		public EqualPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterEqualPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitEqualPF(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class OrPFContext extends PfContext {
@@ -576,6 +752,14 @@ public class ProjectParser extends Parser {
 			return getRuleContext(PfContext.class,i);
 		}
 		public OrPFContext(PfContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterOrPF(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitOrPF(this);
+		}
 	}
 
 	public final PfContext pf() throws RecognitionException {
@@ -759,6 +943,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_tagName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterTagName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitTagName(this);
+		}
 	}
 
 	public final TagNameContext tagName() throws RecognitionException {
@@ -789,6 +981,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_attrName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterAttrName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitAttrName(this);
+		}
 	}
 
 	public final AttrNameContext attrName() throws RecognitionException {
@@ -819,6 +1019,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_filename; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterFilename(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitFilename(this);
+		}
 	}
 
 	public final FilenameContext filename() throws RecognitionException {
@@ -848,6 +1056,14 @@ public class ProjectParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparisonString; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).enterComparisonString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ProjectListener ) ((ProjectListener)listener).exitComparisonString(this);
+		}
 	}
 
 	public final ComparisonStringContext comparisonString() throws RecognitionException {
