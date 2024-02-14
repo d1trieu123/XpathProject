@@ -24,7 +24,7 @@ public class Main {
         ProjectLexer lexer = new ProjectLexer(CharStreams.fromFileName(fname));
         ProjectParser parser = new ProjectParser(new CommonTokenStream(lexer));
         ParseTree tree = parser.ap();
-        MyVisitor visitor = new MyVisitor();
+        XpathVisitor visitor = new XpathVisitor();
         visitor.visit(tree);
         String xmlFileName = visitor.getFileName();
 
@@ -43,8 +43,8 @@ public class Main {
             Document document = builder.parse(new File(xmlFileName));
             //prints everything from this node down
 
-            MyVisitor visitor = new MyVisitor();
-            visitor.setDoc(document);
+            XpathVisitor visitor = new XpathVisitor();
+
             visitor.visit(tree);
             visitor.printNodes();
             // visitor.visit(tree);
