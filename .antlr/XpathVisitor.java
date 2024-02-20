@@ -39,6 +39,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         return children;
     }
     public LinkedList<Node> visitDescendant(ProjectParser.RpContext ctx){
+        System.out.println("visit descendant " + ctx.getText());
         LinkedList<Node> tmp = new LinkedList<>();
         for(Node node: this.availNodes){
             tmp.addAll(getChildren(node));
