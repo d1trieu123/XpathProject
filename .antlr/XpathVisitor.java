@@ -2,17 +2,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
+import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +25,205 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     LinkedList<Node> availNodes = new LinkedList<>();
     String docName = "";
     LinkedList<Node> answer = new LinkedList<>();
+    HashMap<String, LinkedList<Node>> contextMap = new HashMap<>();
+    Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
+    Document outputDoc = null;
+    Document doc = null;
+
+    @Override
+    public LinkedList<Node> visitForXQ(ProjectParser.ForXQContext ctx){
+        System.out.println("visit for xq " + ctx.getText());
+        LinkedList<Node> results = new LinkedList<>();
+        HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
+        contextStack.push(old);
+        FLWR(0, results, ctx);
+        contextMap = contextStack.pop();
+        return results;
+    }
+
+    public void FLWR(int i, LinkedList<Node> results, ProjectParser.ForXQContext ctx){
+        int forLoops = ctx.forClause().var().size();
+        if(i == forLoops){
+            if(ctx.letClause() != null){
+                visit(ctx.letClause());
+            }
+            if(ctx.whereClause() != null){
+                int where = visit(ctx.whereClause()).size();
+                if(where == 0){
+                    return;
+                }
+            }
+            LinkedList<Node> returnNodes = visit(ctx.returnClause());
+            results.addAll(returnNodes);
+        }
+        else{
+            String var = ctx.forClause().var(i).getText();
+            LinkedList<Node> values = visit(ctx.forClause().xq(i));
+            for(Node value: values){
+                HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
+                contextStack.push(old);
+                LinkedList<Node> temp = new LinkedList<>();
+                temp.add(value);
+                contextMap.put(var, temp);
+                if(i+1 <= forLoops){
+                    FLWR(i+1, results, ctx);
+                }
+                contextMap = contextStack.pop();
+            }
+
+        }
+    }
+
+    @Override
+    public LinkedList<Node> visitTagXQ(ProjectParser.TagXQContext ctx){
+        String tag = ctx.startTag().tagName().getText();
+        LinkedList<Node> nodes = visit(ctx.xq());
+        Node node = makeElem(tag,nodes);
+        LinkedList<Node> res = new LinkedList<>();
+        res.add(node);
+        return res;
+
+    }
+
+    public Node makeElem(String tag, LinkedList<Node> nodes){
+       Node res = outputDoc.createElement(tag);
+       for(Node node: nodes){
+            if(node != null){
+                Node createdNode = outputDoc.importNode(node, true);
+                res.appendChild(createdNode);
+            }
+       }
+        return res; 
+    }
+
+    @Override
+    public LinkedList<Node> visitApXQ(ProjectParser.ApXQContext ctx){
+        return visit(ctx.ap());
+    }
+
+    @Override
+    public LinkedList<Node> visitLetXQ(ProjectParser.LetXQContext ctx){
+        HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
+        contextStack.push(old);
+        LinkedList<Node> res = visitChildren(ctx);
+        contextMap = contextStack.pop();
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitCommaXQ(ProjectParser.CommaXQContext ctx){
+        LinkedList<Node> res = new LinkedList<>();
+        LinkedList<Node> left = visit(ctx.xq(0));
+        LinkedList<Node> right = visit(ctx.xq(1));
+        res.addAll(left);
+        res.addAll(right);
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitVarXQ(ProjectParser.VarXQContext ctx){
+        String var = ctx.var().getText();
+        return contextMap.get(var);
+    }
+
+    @Override
+    public LinkedList<Node> visitStringXQ(ProjectParser.StringXQContext ctx){
+        String str = ctx.stringConstant().getText();
+        str = str.substring(1, str.length() - 1);
+        Node node = makeText(str);
+        LinkedList<Node> res = new LinkedList<>();
+        res.add(node);
+        return res;
+    }
+
+    public Node makeText(String str){
+        Node result = doc.createTextNode(str);
+        return result;
+
+    }
+
+    @Override
+    public LinkedList<Node> visitParenXQ(ProjectParser.ParenXQContext ctx){
+        return visit(ctx.xq());
+    }
+
+    @Override
+    public LinkedList<Node> visitChildXQ(ProjectParser.ChildXQContext ctx){
+        System.out.println("child xq " + ctx.getText());
+        LinkedList<Node> temp = visit(ctx.xq());
+        LinkedList<Node> res = new LinkedList<>();
+        for(Node node: temp){
+            LinkedList<Node> children = visit(ctx.rp());
+            res.addAll(children);
+        }
+        return res;
+
+
+        
+    }
+
+    @Override 
+    public LinkedList<Node> visitDescendXQ(ProjectParser.DescendXQContext ctx){
+        LinkedList<Node> temp = visit(ctx.xq());
+        LinkedList<Node> res = new LinkedList<>();
+        for(Node node: temp){
+            LinkedList<Node> children = visitDescendant(ctx.rp());
+            res.addAll(children);
+        }
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitForClause(ProjectParser.ForClauseContext ctx){
+        return null;
+    }
+
+    @Override
+    public LinkedList<Node> visitLetClause(ProjectParser.LetClauseContext ctx){
+        for(int i =0 ; i<ctx.var().size(); i++){
+            String var = ctx.var(i).getText();
+            LinkedList<Node> value = visit(ctx.xq(i));
+            contextMap.put(var, value);
+        }
+
+        return null;
+    }
+
+    @Override
+    public LinkedList<Node> visitWhereClause(ProjectParser.WhereClauseContext ctx){
+        return visit(ctx.cond());
+    }
+
+    @Override
+    public LinkedList<Node> visitReturnClause(ProjectParser.ReturnClauseContext ctx){
+        return visit(ctx.rt());
+    }
+
+    @Override
+    public LinkedList<Node> visitTagReturn(ProjectParser.TagReturnContext ctx){
+        String tag = ctx.startTag().tagName().getText();
+        LinkedList<Node> nodes = visit(ctx.rt());
+        Node node = makeElem(tag,nodes);
+        LinkedList<Node> res = new LinkedList<>();
+        res.add(node);
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitCommaReturn(ProjectParser.CommaReturnContext ctx){
+        LinkedList<Node> res = new LinkedList<>();
+        LinkedList<Node> left = visit(ctx.rt(0));
+        LinkedList<Node> right = visit(ctx.rt(1));
+        res.addAll(left);
+        res.addAll(right);
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitXqReturn(ProjectParser.XqReturnContext ctx){
+        return visit(ctx.xq());
+    }
+
 
     public LinkedList<Node> getChildren(Node node){
         LinkedList<Node> children = new LinkedList<>();
