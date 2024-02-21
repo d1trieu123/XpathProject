@@ -10,6 +10,177 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface ProjectVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by the {@code descendXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDescendXQ(ProjectParser.DescendXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code tagXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTagXQ(ProjectParser.TagXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code forXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForXQ(ProjectParser.ForXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code apXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitApXQ(ProjectParser.ApXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenXQ(ProjectParser.ParenXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code letXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLetXQ(ProjectParser.LetXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringXQ(ProjectParser.StringXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code commaXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommaXQ(ProjectParser.CommaXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code varXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarXQ(ProjectParser.VarXQContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code childXQ}
+	 * labeled alternative in {@link ProjectParser#xq}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChildXQ(ProjectParser.ChildXQContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#forClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForClause(ProjectParser.ForClauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#letClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLetClause(ProjectParser.LetClauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#whereClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhereClause(ProjectParser.WhereClauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#returnClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnClause(ProjectParser.ReturnClauseContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code tagReturn}
+	 * labeled alternative in {@link ProjectParser#rt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTagReturn(ProjectParser.TagReturnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code xqReturn}
+	 * labeled alternative in {@link ProjectParser#rt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXqReturn(ProjectParser.XqReturnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code commaReturn}
+	 * labeled alternative in {@link ProjectParser#rt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommaReturn(ProjectParser.CommaReturnContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code equalCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualCond(ProjectParser.EqualCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code orCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrCond(ProjectParser.OrCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code satisfyCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSatisfyCond(ProjectParser.SatisfyCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code emptyCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyCond(ProjectParser.EmptyCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code sameCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSameCond(ProjectParser.SameCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code andCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndCond(ProjectParser.AndCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenCond(ProjectParser.ParenCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code notCond}
+	 * labeled alternative in {@link ProjectParser#cond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotCond(ProjectParser.NotCondContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code childAP}
 	 * labeled alternative in {@link ProjectParser#ap}.
 	 * @param ctx the parse tree
@@ -171,6 +342,12 @@ public interface ProjectVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrPF(ProjectParser.OrPFContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ProjectParser#stringConstant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringConstant(ProjectParser.StringConstantContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ProjectParser#tagName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -183,11 +360,29 @@ public interface ProjectVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAttrName(ProjectParser.AttrNameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ProjectParser#startTag}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStartTag(ProjectParser.StartTagContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#endTag}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEndTag(ProjectParser.EndTagContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ProjectParser#filename}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFilename(ProjectParser.FilenameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ProjectParser#var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar(ProjectParser.VarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ProjectParser#comparisonString}.
 	 * @param ctx the parse tree

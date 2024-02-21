@@ -23,7 +23,7 @@ public class Main {
         String fname = args[0];
         ProjectLexer lexer = new ProjectLexer(CharStreams.fromFileName(fname));
         ProjectParser parser = new ProjectParser(new CommonTokenStream(lexer));
-        ParseTree tree = parser.ap();
+        ParseTree tree = parser.xq();
         XpathVisitor visitor = new XpathVisitor();
         visitor.visit(tree);
         String xmlFileName = visitor.getFileName();

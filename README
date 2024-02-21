@@ -19,11 +19,18 @@ java -cp .;antlr-4.13.1-complete.jar Main test1.txt
 // generate parser code from grammar Exp.g 
 java -cp antlr-4.13.1-complete.jar org.antlr.v4.Tool Project.g
 
+
+// create visitors
+antlr4 Project.g -visitor
+
+
+
 // compile parser code
 javac -cp .;antlr-4.13.1-complete.jar *.java
 
 // call parser on stdin, to display parse tree in gui
-java -cp .;antlr-4.13.1-complete.jar org.antlr.v4.gui.TestRig Project xpath -gui
+java -cp .;antlr-4.13.1-complete.jar org.antlr.v4.gui.TestRig Project xq -gui
+
 
 // call parser on stdin, to display parse tree in console
 java -cp .;antlr-4.13.1-complete.jar org.antlr.v4.gui.TestRig Project eval
