@@ -27,14 +27,14 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     String docName = "";
     LinkedList<Node> answer = new LinkedList<>();
 
-    public LinkedList<Node> getChildren(Node node){
+    public LinkedList<Node> getAllChildren(Node node){
         LinkedList<Node> children = new LinkedList<>();
         Node child;
         NodeList childrenNodes = node.getChildNodes();
         for(int i = 0; i < childrenNodes.getLength(); i++){
             child = childrenNodes.item(i);
             children.add(child);
-            children.addAll(getChildren(child));
+            children.addAll(getAllChildren(child));
         }
         return children;
     }
@@ -42,7 +42,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         System.out.println("visit descendant " + ctx.getText());
         LinkedList<Node> tmp = new LinkedList<>();
         for(Node node: this.availNodes){
-            tmp.addAll(getChildren(node));
+            tmp.addAll(getAllChildren(node));
         }
         for(Node node : tmp){
             if(!this.availNodes.contains(node)){
@@ -160,7 +160,6 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     public LinkedList<Node> visitFilterPath(ProjectParser.FilterPathContext ctx){
         System.out.println("filter path " + ctx.getText());
         this.availNodes = visit(ctx.rp());
-        System.out.println(availNodes);
         return visit(ctx.pf());
     }
 
@@ -255,8 +254,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
             this.availNodes = evalNode;
             LinkedList<Node> r = visit(ctx.rp(1)); // right nodes
-
-            // Why not break the loop after finding the first equal node?
+            
             for (Node ln: l)
                 for (Node rn: r)
                     if (ln.isEqualNode(rn) && !res.contains(node))
