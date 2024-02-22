@@ -443,17 +443,17 @@ public interface XQueryListener extends ParseTreeListener {
 	 */
 	void exitEqualsCond(XQueryParser.EqualsCondContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code sameCond}
+	 * Enter a parse tree produced by the {@code orCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void enterSameCond(XQueryParser.SameCondContext ctx);
+	void enterOrCond(XQueryParser.OrCondContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code sameCond}
+	 * Exit a parse tree produced by the {@code orCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
 	 * @param ctx the parse tree
 	 */
-	void exitSameCond(XQueryParser.SameCondContext ctx);
+	void exitOrCond(XQueryParser.OrCondContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code emptyCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
@@ -466,6 +466,30 @@ public interface XQueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEmptyCond(XQueryParser.EmptyCondContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code sameCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterSameCond(XQueryParser.SameCondContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code sameCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitSameCond(XQueryParser.SameCondContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code andCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterAndCond(XQueryParser.AndCondContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code andCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitAndCond(XQueryParser.AndCondContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code someCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
@@ -490,30 +514,6 @@ public interface XQueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenCond(XQueryParser.ParenCondContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code andCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterAndCond(XQueryParser.AndCondContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code andCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitAndCond(XQueryParser.AndCondContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code orCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void enterOrCond(XQueryParser.OrCondContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code orCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 */
-	void exitOrCond(XQueryParser.OrCondContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code notCond}
 	 * labeled alternative in {@link XQueryParser#condition}.

@@ -265,12 +265,12 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqualsCond(XQueryParser.EqualsCondContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code sameCond}
+	 * Visit a parse tree produced by the {@code orCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSameCond(XQueryParser.SameCondContext ctx);
+	T visitOrCond(XQueryParser.OrCondContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code emptyCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
@@ -278,6 +278,20 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEmptyCond(XQueryParser.EmptyCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code sameCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSameCond(XQueryParser.SameCondContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code andCond}
+	 * labeled alternative in {@link XQueryParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndCond(XQueryParser.AndCondContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code someCond}
 	 * labeled alternative in {@link XQueryParser#condition}.
@@ -292,20 +306,6 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenCond(XQueryParser.ParenCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code andCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAndCond(XQueryParser.AndCondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code orCond}
-	 * labeled alternative in {@link XQueryParser#condition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOrCond(XQueryParser.OrCondContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code notCond}
 	 * labeled alternative in {@link XQueryParser#condition}.

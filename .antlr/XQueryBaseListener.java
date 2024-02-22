@@ -460,13 +460,13 @@ public class XQueryBaseListener implements XQueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSameCond(XQueryParser.SameCondContext ctx) { }
+	@Override public void enterOrCond(XQueryParser.OrCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSameCond(XQueryParser.SameCondContext ctx) { }
+	@Override public void exitOrCond(XQueryParser.OrCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -479,6 +479,30 @@ public class XQueryBaseListener implements XQueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEmptyCond(XQueryParser.EmptyCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSameCond(XQueryParser.SameCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSameCond(XQueryParser.SameCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAndCond(XQueryParser.AndCondContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAndCond(XQueryParser.AndCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -503,30 +527,6 @@ public class XQueryBaseListener implements XQueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParenCond(XQueryParser.ParenCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAndCond(XQueryParser.AndCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAndCond(XQueryParser.AndCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOrCond(XQueryParser.OrCondContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOrCond(XQueryParser.OrCondContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
