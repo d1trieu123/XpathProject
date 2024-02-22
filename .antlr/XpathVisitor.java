@@ -21,7 +21,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
+public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     LinkedList<Node> availNodes = new LinkedList<>();
     String docName = "";
     LinkedList<Node> answer = new LinkedList<>();
@@ -29,7 +29,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
 
     @Override
-    public LinkedList<Node> visitForXQ(ProjectParser.ForXQContext ctx){
+    public LinkedList<Node> visitFlwrXQ(XQueryParser.FlwrXQContext ctx){
         System.out.println("visit for xq " + ctx.getText());
         LinkedList<Node> results = new LinkedList<>();
         HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
@@ -40,7 +40,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         return results;
     }
 
-    public void FLWR(int i, LinkedList<Node> results, ProjectParser.ForXQContext ctx){
+    public void FLWR(int i, LinkedList<Node> results, XQueryParser.FlwrXQContext ctx){
         int forLoops = ctx.forClause().var().size();
         if(i == forLoops){
             if(ctx.letClause() != null){
@@ -75,8 +75,8 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitTagXQ(ProjectParser.TagXQContext ctx){
-        String tag = ctx.startTag().tagName().getText();
+    public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){
+        String tag = ctx.tagname(0).getText();
         System.out.println("VISIT TAG XQ " + tag);
         LinkedList<Node> nodes = visit(ctx.xq());
         Node node = makeElem(tag,nodes);
@@ -86,6 +86,8 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     }
 
+    
+
     public Node makeElem(String tag, LinkedList<Node> nodes){
         Document doc = null;
         Node result = doc.createElement(tag);
@@ -93,13 +95,13 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitApXQ(ProjectParser.ApXQContext ctx){
+    public LinkedList<Node> visitApXQ(XQueryParser.ApXQContext ctx){
         System.out.println("VISIT AP XQ " + ctx.getText());
         return visit(ctx.ap());
     }
 
     @Override
-    public LinkedList<Node> visitLetXQ(ProjectParser.LetXQContext ctx){
+    public LinkedList<Node> visitLetXQ(XQueryParser.LetXQContext ctx){
         System.out.println("VISIT LET XQ " + ctx.getText());
         HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
         contextStack.push(old);
@@ -109,7 +111,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitCommaXQ(ProjectParser.CommaXQContext ctx){
+    public LinkedList<Node> visitCommaXQ(XQueryParser.CommaXQContext ctx){
         System.out.println("COMMA XQ "  + ctx.xq(0).getText() + " " + ctx.xq(1).getText());
         LinkedList<Node> res = new LinkedList<>();
         LinkedList<Node> left = visit(ctx.xq(0));
@@ -120,16 +122,16 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitVarXQ(ProjectParser.VarXQContext ctx){
+    public LinkedList<Node> visitVarXQ(XQueryParser.VarXQContext ctx){
         System.out.println("VISIT VAR " + ctx.var().getText());
         String var = ctx.var().getText();
         return contextMap.get(var);
     }
 
     @Override
-    public LinkedList<Node> visitStringXQ(ProjectParser.StringXQContext ctx){
+    public LinkedList<Node> visitStrXQ(XQueryParser.StrXQContext ctx){
 
-        String str = ctx.stringConstant().getText();
+        String str = ctx.strconst().getText();
         System.out.println("STRING XQ " + str);
         str = str.substring(1, str.length() - 1);
         Node node = makeText(str);
@@ -145,12 +147,12 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitParenXQ(ProjectParser.ParenXQContext ctx){
+    public LinkedList<Node> visitParenXQ(XQueryParser.ParenXQContext ctx){
         return visit(ctx.xq());
     }
 
     @Override
-    public LinkedList<Node> visitChildXQ(ProjectParser.ChildXQContext ctx){
+    public LinkedList<Node> visitSlashXQ(XQueryParser.SlashXQContext ctx){
         System.out.println("CHILD XQ " + ctx.getText());
         availNodes = visit(ctx.xq());
         LinkedList<Node> res = new LinkedList<>();
@@ -165,7 +167,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override 
-    public LinkedList<Node> visitDescendXQ(ProjectParser.DescendXQContext ctx){
+    public LinkedList<Node> visitDoubleslashXQ(XQueryParser.DoubleslashXQContext ctx){
         System.out.println("DESCEND XQ " + ctx.getText());
         LinkedList<Node> tmp = visit(ctx.xq());
         tmp.addAll(getChildren(tmp.get(0)));
@@ -179,13 +181,13 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitForClause(ProjectParser.ForClauseContext ctx){
+    public LinkedList<Node> visitForClause(XQueryParser.ForClauseContext ctx){
 
         return null;
     }
 
     @Override
-    public LinkedList<Node> visitLetClause(ProjectParser.LetClauseContext ctx){
+    public LinkedList<Node> visitLetClause(XQueryParser.LetClauseContext ctx){
         for(int i =0 ; i<ctx.var().size(); i++){
             String var = ctx.var(i).getText();
             LinkedList<Node> value = visit(ctx.xq(i));
@@ -196,40 +198,14 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitWhereClause(ProjectParser.WhereClauseContext ctx){
-        return visit(ctx.cond());
+    public LinkedList<Node> visitWhereClause(XQueryParser.WhereClauseContext ctx){
+        return visit(ctx.condition());
     }
 
     @Override
-    public LinkedList<Node> visitReturnClause(ProjectParser.ReturnClauseContext ctx){
-        return visit(ctx.rt());
-    }
-
-    @Override
-    public LinkedList<Node> visitTagReturn(ProjectParser.TagReturnContext ctx){
-        String tag = ctx.startTag().tagName().getText();
-        LinkedList<Node> nodes = visit(ctx.rt());
-        Node node = makeElem(tag,nodes);
-        LinkedList<Node> res = new LinkedList<>();
-        res.add(node);
-        return res;
-    }
-
-    @Override
-    public LinkedList<Node> visitCommaReturn(ProjectParser.CommaReturnContext ctx){
-        LinkedList<Node> res = new LinkedList<>();
-        LinkedList<Node> left = visit(ctx.rt(0));
-        LinkedList<Node> right = visit(ctx.rt(1));
-        res.addAll(left);
-        res.addAll(right);
-        return res;
-    }
-
-    @Override
-    public LinkedList<Node> visitXqReturn(ProjectParser.XqReturnContext ctx){
+    public LinkedList<Node> visitReturnClause(XQueryParser.ReturnClauseContext ctx){
         return visit(ctx.xq());
     }
-
 
     public LinkedList<Node> getChildren(Node node){
         LinkedList<Node> children = new LinkedList<>();
@@ -242,7 +218,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         }
         return children;
     }
-    public LinkedList<Node> visitDescendant(ProjectParser.RpContext ctx){
+    public LinkedList<Node> visitDescendant(XQueryParser.RpContext ctx){
         System.out.println("visit descendant " + ctx.getText());
         LinkedList<Node> tmp = new LinkedList<>();
         for(Node node: this.availNodes){
@@ -259,13 +235,13 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitChildAP(ProjectParser.ChildAPContext ctx){
+    public LinkedList<Node> visitChildAP(XQueryParser.ChildAPContext ctx){
         this.availNodes = visit(ctx.doc());
         answer = visit(ctx.rp());
         return answer;
     }
     @Override
-    public LinkedList<Node> visitDescendAP(ProjectParser.DescendAPContext ctx){
+    public LinkedList<Node> visitDescendAP(XQueryParser.DescendAPContext ctx){
         this.availNodes = visit(ctx.doc());
         System.out.println("doc " + availNodes);
         answer = visitDescendant(ctx.rp());
@@ -275,8 +251,10 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitDocName(ProjectParser.DocNameContext ctx){
+    public LinkedList<Node> visitDocName(XQueryParser.DocNameContext ctx){
         String fileName = ctx.filename().getText();
+        fileName = fileName.substring(1, fileName.length() - 1);
+        System.out.println("FILENAME " + fileName);
         File xmlFile = new File(fileName);
         docName = fileName;
         LinkedList<Node> res = new LinkedList<>();
@@ -295,13 +273,13 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     }
     @Override 
-    public LinkedList<Node> visitDescendRP(ProjectParser.DescendRPContext ctx){
+    public LinkedList<Node> visitDescendRP(XQueryParser.DescendRPContext ctx){
        this.availNodes = visit(ctx.rp(0));
        return visitDescendant(ctx.rp(1));
     }
 
     @Override
-    public LinkedList<Node> visitTextRP(ProjectParser.TextRPContext ctx){
+    public LinkedList<Node> visitTextRP(XQueryParser.TextRPContext ctx){
         NodeList children;
         Node child;
         LinkedList<Node> res = new LinkedList<>();
@@ -318,7 +296,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitAttrRP(ProjectParser.AttrRPContext ctx){
+    public LinkedList<Node> visitAttrRP(XQueryParser.AttrRPContext ctx){
         LinkedList<Node> res = new LinkedList<>();
 
         NamedNodeMap attributes;
@@ -330,22 +308,18 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
             }
         }
         this.availNodes = res;
-        return visit(ctx.attrName());
-    }
-
-    @Override
-    public LinkedList<Node> visitAttrName(ProjectParser.AttrNameContext ctx) {
-        LinkedList<Node> res = new LinkedList<>(); // result nodes
+        String attr = ctx.WORD().getText();
+        LinkedList<Node> res2 = new LinkedList<>();
         for(Node node: this.availNodes){
-            if(node.getNodeName().equals(ctx.getText())){
-                res.add(node);
+            if(node.getNodeName().equals(attr)){
+                res2.add(node);
             }
         }
-        return res;
+        return res2;
     }
 
     @Override
-    public LinkedList<Node> visitParentRP(ProjectParser.ParentRPContext ctx){
+    public LinkedList<Node> visitParentRP(XQueryParser.ParentRPContext ctx){
         LinkedList<Node> res = new LinkedList<>();
         Node parentNode;
         for(Node node: this.availNodes){
@@ -359,19 +333,19 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitSelfRP(ProjectParser.SelfRPContext ctx){
+    public LinkedList<Node> visitSelfRP(XQueryParser.SelfRPContext ctx){
         return this.availNodes;
     }
     @Override 
-    public LinkedList<Node> visitFilterPath(ProjectParser.FilterPathContext ctx){
+    public LinkedList<Node> visitFilterPath(XQueryParser.FilterPathContext ctx){
         System.out.println("filter path " + ctx.getText());
         this.availNodes = visit(ctx.rp());
         System.out.println(availNodes);
-        return visit(ctx.pf());
+        return visit(ctx.filter());
     }
 
     @Override
-    public LinkedList<Node> visitUnionRP(ProjectParser.UnionRPContext ctx){
+    public LinkedList<Node> visitCommaRP(XQueryParser.CommaRPContext ctx){
         LinkedList<Node> res1 = visit(ctx.rp(0));
         LinkedList<Node> res2 = visit(ctx.rp(1));
         for(Node node: res2){
@@ -383,12 +357,12 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitParenRP(ProjectParser.ParenRPContext ctx){
+    public LinkedList<Node> visitParenRP(XQueryParser.ParenRPContext ctx){
         return visit(ctx.rp());
     }
 
     @Override
-    public LinkedList<Node> visitChildrenRP(ProjectParser.ChildrenRPContext ctx){
+    public LinkedList<Node> visitChildrenRP(XQueryParser.ChildrenRPContext ctx){
        LinkedList<Node> res = new LinkedList<>();
        NodeList children;
        for(Node node: this.availNodes){
@@ -401,7 +375,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitTagRP(ProjectParser.TagRPContext ctx){
+    public LinkedList<Node> visitTagRP(XQueryParser.TagRPContext ctx){
         LinkedList<Node> tmp = new LinkedList<>();
         NodeList children;
         Node child;
@@ -418,11 +392,11 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
             }
         }
         this.availNodes = tmp;
-        return visit(ctx.tagName());
+        return visit(ctx.tagname());
     }
 
     @Override
-    public LinkedList<Node> visitTagName(ProjectParser.TagNameContext ctx) {
+    public LinkedList<Node> visitTagname(XQueryParser.TagnameContext ctx) {
         LinkedList<Node> res = new LinkedList<>(); // result nodes
 
         for (Node node: this.availNodes){
@@ -437,7 +411,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitChildRP(ProjectParser.ChildRPContext ctx){
+    public LinkedList<Node> visitChildRP(XQueryParser.ChildRPContext ctx){
         
         
         this.availNodes = visit(ctx.rp(0));
@@ -447,7 +421,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitEqualsPF(ProjectParser.EqualsPFContext ctx) {
+    public LinkedList<Node> visitEqualsPF(XQueryParser.EqualsPFContext ctx) {
 
         LinkedList<Node> tmp = this.availNodes;
         LinkedList<Node> res = new LinkedList<>();
@@ -462,7 +436,6 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
             this.availNodes = evalNode;
             LinkedList<Node> r = visit(ctx.rp(1)); // right nodes
 
-            // Why not break the loop after finding the first equal node?
             for (Node ln: l)
                 for (Node rn: r)
                     if (ln.isEqualNode(rn) && !res.contains(node))
@@ -474,7 +447,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitSamePF(ProjectParser.SamePFContext ctx) {
+    public LinkedList<Node> visitSamePF(XQueryParser.SamePFContext ctx) {
         LinkedList<Node> tmp = this.availNodes;
         LinkedList<Node> res = new LinkedList<>();
 
@@ -500,7 +473,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitRpPF(ProjectParser.RpPFContext ctx) {
+    public LinkedList<Node> visitRpPF(XQueryParser.RpPFContext ctx) {
         LinkedList<Node> res = new LinkedList<>();
         LinkedList<Node> tmp = this.availNodes;
 
@@ -519,19 +492,19 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitParenPF(ProjectParser.ParenPFContext ctx) {
-        return visit(ctx.pf());
+    public LinkedList<Node> visitParenPF(XQueryParser.ParenPFContext ctx) {
+        return visit(ctx.filter());
     }
 
     @Override
-    public LinkedList<Node> visitAndPF(ProjectParser.AndPFContext ctx) {
+    public LinkedList<Node> visitApPF(XQueryParser.ApPFContext ctx) {
         LinkedList<Node> res;
         LinkedList<Node> tmp = this.availNodes;
 
-        HashSet<Node> ls = new HashSet<>(visit(ctx.pf(0)));
+        HashSet<Node> ls = new HashSet<>(visit(ctx.filter(0)));
 
         this.availNodes = tmp;
-        HashSet<Node> rs = new HashSet<>(visit(ctx.pf(1)));
+        HashSet<Node> rs = new HashSet<>(visit(ctx.filter(1)));
 
         ls.retainAll(rs);
         res = new LinkedList<>(ls);
@@ -540,14 +513,14 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitOrPF(ProjectParser.OrPFContext ctx) {
+    public LinkedList<Node> visitOrPF(XQueryParser.OrPFContext ctx) {
         LinkedList<Node> res;
         LinkedList<Node> tmp = this.availNodes;
 
-        HashSet<Node> ls = new HashSet<>(visit(ctx.pf(0)));
+        HashSet<Node> ls = new HashSet<>(visit(ctx.filter(0)));
 
         this.availNodes = tmp;
-        HashSet<Node> rs = new HashSet<>(visit(ctx.pf(1)));
+        HashSet<Node> rs = new HashSet<>(visit(ctx.filter(1)));
 
         ls.addAll(rs);
         res = new LinkedList<>(ls);
@@ -556,10 +529,10 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitNotPF(ProjectParser.NotPFContext ctx) {
+    public LinkedList<Node> visitNotPF(XQueryParser.NotPFContext ctx) {
         LinkedList<Node> res;
         HashSet<Node> frontier = new HashSet<>(this.availNodes);
-        HashSet<Node> remover = new HashSet<>(visit(ctx.pf()));
+        HashSet<Node> remover = new HashSet<>(visit(ctx.filter()));
 
         frontier.removeAll(remover);
         res = new LinkedList<>(frontier);
@@ -569,10 +542,10 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitStringPF(ProjectParser.StringPFContext ctx) {
+    public LinkedList<Node> visitStringPF(XQueryParser.StringPFContext ctx) {
         LinkedList<Node> res = new LinkedList<>();
         LinkedList<Node> temp = this.availNodes;
-        String str = ctx.comparisonString().getText();
+        String str = ctx.strconst().getText();
         str = str.substring(1, str.length() - 1);
         System.out.println(str);
 

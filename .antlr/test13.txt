@@ -1,5 +1,14 @@
 <result>{
 for $a in doc("j_caesar.xml")//ACT,      
-$sc in $a/SCENE
+$sc in $a/SCENE,
+$sp in $sc/SPEECH
 return $sc
+}</result>
+
+
+<result>{
+for $a in doc("j_caesar.xml")//ACT,
+$sc in $a//SCENE,
+$sp in $sc/SPEECH
+return $sp
 }</result>
