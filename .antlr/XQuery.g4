@@ -44,9 +44,9 @@ filter
     : rp                                                #rpPF
     | filter AND filter                                 #apPF
     | filter OR filter                                  #orPF
-    | NOT filter                                        #notPF
+    | 'not' filter                                        #notPF
     | rp'=' rp                                          #equalsPF
-    | rp' eq ' rp                                       #equalsPF
+    | rp EQ rp                                       #equalsPF
     | rp'==' rp                                         #samePF
     | rp' is ' rp                                       #samePF
     | rp'=' strconst                                    #stringPF
@@ -63,8 +63,8 @@ whereClause
     : 'where' condition ;
 
 condition
-    : xq   '='  xq                  #equalsCond
-    | xq ' eq ' xq                  #equalsCond
+    : xq  '='  xq                  #equalsCond
+    | xq EQ xq                  #equalsCond
     | xq  '=='  xq                  #sameCond
     | xq ' is ' xq                  #sameCond
     | 'empty(' xq ')'               #emptyCond
@@ -72,24 +72,23 @@ condition
     | '(' xq ')'                    #parenCond
     | xq AND xq                     #andCond
     | xq OR xq                      #orCond 
-    | NOT xq                        #notCond
+    | 'not' xq                        #notCond
     ;
 
 someClause
-    : 'some' var 'in' xq (',' var 'in' xq)* 'satisfies' condition ;
+    : 'some' var 'in' xq (',' var 'in' xq)* 'satisfies' condition;
 
 
 returnClause
     : 'return' xq ;
 
-tagname
-    : WORD ;
+var
+    : '$' WORD ;
+
 
 strconst
     : QTEXT ;
 
-var
-    : '$' WORD ;
 
 AND
     : ' and ';
@@ -97,8 +96,10 @@ AND
 OR
     : ' or ';
 
-NOT
-    : 'not ';
+tagname
+    : WORD ;
+    
+EQ : 'eq';
 
 QTEXT
     : '"'~["]*'"' ;

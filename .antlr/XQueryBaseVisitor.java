@@ -339,7 +339,7 @@ public class XQueryBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTagname(XQueryParser.TagnameContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVar(XQueryParser.VarContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -353,5 +353,5 @@ public class XQueryBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVar(XQueryParser.VarContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTagname(XQueryParser.TagnameContext ctx) { return visitChildren(ctx); }
 }

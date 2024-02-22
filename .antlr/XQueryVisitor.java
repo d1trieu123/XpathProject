@@ -326,11 +326,11 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReturnClause(XQueryParser.ReturnClauseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link XQueryParser#tagname}.
+	 * Visit a parse tree produced by {@link XQueryParser#var}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTagname(XQueryParser.TagnameContext ctx);
+	T visitVar(XQueryParser.VarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link XQueryParser#strconst}.
 	 * @param ctx the parse tree
@@ -338,9 +338,9 @@ public interface XQueryVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStrconst(XQueryParser.StrconstContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link XQueryParser#var}.
+	 * Visit a parse tree produced by {@link XQueryParser#tagname}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar(XQueryParser.VarContext ctx);
+	T visitTagname(XQueryParser.TagnameContext ctx);
 }

@@ -547,15 +547,15 @@ public interface XQueryListener extends ParseTreeListener {
 	 */
 	void exitReturnClause(XQueryParser.ReturnClauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link XQueryParser#tagname}.
+	 * Enter a parse tree produced by {@link XQueryParser#var}.
 	 * @param ctx the parse tree
 	 */
-	void enterTagname(XQueryParser.TagnameContext ctx);
+	void enterVar(XQueryParser.VarContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link XQueryParser#tagname}.
+	 * Exit a parse tree produced by {@link XQueryParser#var}.
 	 * @param ctx the parse tree
 	 */
-	void exitTagname(XQueryParser.TagnameContext ctx);
+	void exitVar(XQueryParser.VarContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link XQueryParser#strconst}.
 	 * @param ctx the parse tree
@@ -567,13 +567,13 @@ public interface XQueryListener extends ParseTreeListener {
 	 */
 	void exitStrconst(XQueryParser.StrconstContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link XQueryParser#var}.
+	 * Enter a parse tree produced by {@link XQueryParser#tagname}.
 	 * @param ctx the parse tree
 	 */
-	void enterVar(XQueryParser.VarContext ctx);
+	void enterTagname(XQueryParser.TagnameContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link XQueryParser#var}.
+	 * Exit a parse tree produced by {@link XQueryParser#tagname}.
 	 * @param ctx the parse tree
 	 */
-	void exitVar(XQueryParser.VarContext ctx);
+	void exitTagname(XQueryParser.TagnameContext ctx);
 }

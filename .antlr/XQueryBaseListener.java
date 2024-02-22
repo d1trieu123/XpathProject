@@ -568,13 +568,13 @@ public class XQueryBaseListener implements XQueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTagname(XQueryParser.TagnameContext ctx) { }
+	@Override public void enterVar(XQueryParser.VarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTagname(XQueryParser.TagnameContext ctx) { }
+	@Override public void exitVar(XQueryParser.VarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -592,13 +592,13 @@ public class XQueryBaseListener implements XQueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar(XQueryParser.VarContext ctx) { }
+	@Override public void enterTagname(XQueryParser.TagnameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar(XQueryParser.VarContext ctx) { }
+	@Override public void exitTagname(XQueryParser.TagnameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
