@@ -27,8 +27,6 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     LinkedList<Node> answer = new LinkedList<>();
     HashMap<String, LinkedList<Node>> contextMap = new HashMap<>();
     Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
-    Document outputDoc = null;
-    Document doc = null;
 
     @Override
     public LinkedList<Node> visitForXQ(ProjectParser.ForXQContext ctx){
@@ -37,6 +35,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
         contextStack.push(old);
         FLWR(0, results, ctx);
+        System.out.println(results);
         contextMap = contextStack.pop();
         return results;
     }
@@ -57,6 +56,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
             results.addAll(returnNodes);
         }
         else{
+            System.out.println("FOR LOOP " + (i+1));
             String var = ctx.forClause().var(i).getText();
             LinkedList<Node> values = visit(ctx.forClause().xq(i));
             for(Node value: values){
@@ -77,6 +77,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     @Override
     public LinkedList<Node> visitTagXQ(ProjectParser.TagXQContext ctx){
         String tag = ctx.startTag().tagName().getText();
+        System.out.println("VISIT TAG XQ " + tag);
         LinkedList<Node> nodes = visit(ctx.xq());
         Node node = makeElem(tag,nodes);
         LinkedList<Node> res = new LinkedList<>();
@@ -86,23 +87,20 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     public Node makeElem(String tag, LinkedList<Node> nodes){
-       Node res = outputDoc.createElement(tag);
-       for(Node node: nodes){
-            if(node != null){
-                Node createdNode = outputDoc.importNode(node, true);
-                res.appendChild(createdNode);
-            }
-       }
-        return res; 
+        Document doc = null;
+        Node result = doc.createElement(tag);
+        return result;
     }
 
     @Override
     public LinkedList<Node> visitApXQ(ProjectParser.ApXQContext ctx){
+        System.out.println("VISIT AP XQ " + ctx.getText());
         return visit(ctx.ap());
     }
 
     @Override
     public LinkedList<Node> visitLetXQ(ProjectParser.LetXQContext ctx){
+        System.out.println("VISIT LET XQ " + ctx.getText());
         HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
         contextStack.push(old);
         LinkedList<Node> res = visitChildren(ctx);
@@ -112,6 +110,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     @Override
     public LinkedList<Node> visitCommaXQ(ProjectParser.CommaXQContext ctx){
+        System.out.println("COMMA XQ "  + ctx.xq(0).getText() + " " + ctx.xq(1).getText());
         LinkedList<Node> res = new LinkedList<>();
         LinkedList<Node> left = visit(ctx.xq(0));
         LinkedList<Node> right = visit(ctx.xq(1));
@@ -122,13 +121,16 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     @Override
     public LinkedList<Node> visitVarXQ(ProjectParser.VarXQContext ctx){
+        System.out.println("VISIT VAR " + ctx.var().getText());
         String var = ctx.var().getText();
         return contextMap.get(var);
     }
 
     @Override
     public LinkedList<Node> visitStringXQ(ProjectParser.StringXQContext ctx){
+
         String str = ctx.stringConstant().getText();
+        System.out.println("STRING XQ " + str);
         str = str.substring(1, str.length() - 1);
         Node node = makeText(str);
         LinkedList<Node> res = new LinkedList<>();
@@ -137,8 +139,8 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
     }
 
     public Node makeText(String str){
-        Node result = doc.createTextNode(str);
-        return result;
+        Node temp = null;
+        return temp;
 
     }
 
@@ -149,10 +151,10 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     @Override
     public LinkedList<Node> visitChildXQ(ProjectParser.ChildXQContext ctx){
-        System.out.println("child xq " + ctx.getText());
-        LinkedList<Node> temp = visit(ctx.xq());
+        System.out.println("CHILD XQ " + ctx.getText());
+        availNodes = visit(ctx.xq());
         LinkedList<Node> res = new LinkedList<>();
-        for(Node node: temp){
+        for(Node node: availNodes){
             LinkedList<Node> children = visit(ctx.rp());
             res.addAll(children);
         }
@@ -164,10 +166,13 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     @Override 
     public LinkedList<Node> visitDescendXQ(ProjectParser.DescendXQContext ctx){
-        LinkedList<Node> temp = visit(ctx.xq());
+        System.out.println("DESCEND XQ " + ctx.getText());
+        LinkedList<Node> tmp = visit(ctx.xq());
+        tmp.addAll(getChildren(tmp.get(0)));
+        availNodes = tmp;
         LinkedList<Node> res = new LinkedList<>();
-        for(Node node: temp){
-            LinkedList<Node> children = visitDescendant(ctx.rp());
+        for(Node node: tmp){
+            LinkedList<Node> children = visit(ctx.rp());
             res.addAll(children);
         }
         return res;
@@ -175,6 +180,7 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
 
     @Override
     public LinkedList<Node> visitForClause(ProjectParser.ForClauseContext ctx){
+
         return null;
     }
 
@@ -240,8 +246,10 @@ public class XpathVisitor extends ProjectBaseVisitor<LinkedList<Node>>{
         System.out.println("visit descendant " + ctx.getText());
         LinkedList<Node> tmp = new LinkedList<>();
         for(Node node: this.availNodes){
+            System.out.println(node);
             tmp.addAll(getChildren(node));
         }
+        System.out.println("this is fine");
         for(Node node : tmp){
             if(!this.availNodes.contains(node)){
                 this.availNodes.add(node);

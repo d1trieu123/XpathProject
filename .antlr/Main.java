@@ -33,31 +33,31 @@ public class Main {
         
 
         //parses the XML file
-        parseXmlDocument(xmlFileName, tree);
+        // parseXmlDocument(xmlFileName, tree);
     }
 
-    private static void parseXmlDocument(String xmlFileName, ParseTree tree) { // parses the XML file from the given query
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(xmlFileName));
-            //prints everything from this node down
+    // private static void parseXmlDocument(String xmlFileName, ParseTree tree) { // parses the XML file from the given query
+    //     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    //     try {
+    //         DocumentBuilder builder = factory.newDocumentBuilder();
+    //         Document document = builder.parse(new File(xmlFileName));
+    //         //prints everything from this node down
 
-            XpathVisitor visitor = new XpathVisitor();
+    //         XpathVisitor visitor = new XpathVisitor();
 
-            visitor.visit(tree);
-            visitor.printNodes();
-            // visitor.visit(tree);
-            // Your XML processing logic here...
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        catch(org.xml.sax.SAXException e){
-            e.printStackTrace();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-       }
-    }
+    //         visitor.visit(tree);
+    //         visitor.printNodes();
+    //         // visitor.visit(tree);
+    //         // Your XML processing logic here...
+    //     } catch (ParserConfigurationException e) {
+    //         e.printStackTrace();
+    //     }
+    //     catch(org.xml.sax.SAXException e){
+    //         e.printStackTrace();
+    //     }
+    //     catch(IOException e){
+    //         e.printStackTrace();
+    //    }
+    // }
 
 }

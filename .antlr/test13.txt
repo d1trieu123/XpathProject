@@ -1,0 +1,5 @@
+<result>{
+for $a in doc("j_caesar.xml")//ACT,      
+$sc in $a/SCENE
+return $sc
+}</result>
