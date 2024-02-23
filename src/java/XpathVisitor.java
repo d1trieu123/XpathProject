@@ -23,7 +23,10 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     LinkedList<Node> availNodes = new LinkedList<>();
+
+    Document doc;
     String docName = "";
+
     LinkedList<Node> answer = new LinkedList<>();
     HashMap<String, LinkedList<Node>> contextMap = new HashMap<>();
     Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
@@ -91,9 +94,13 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
 
     
 
-    public Node makeElem(String tag, LinkedList<Node> nodes){    //TODO Allison implement this function
-        Document doc = null;
+    public Node makeElem(String tag, LinkedList<Node> nodes){
         Node result = doc.createElement(tag);
+
+        for (Node elem : nodes) {
+            result.appendChild(elem.cloneNode(true));
+        }
+
         return result;
     }
 
@@ -143,10 +150,8 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         return res;
     }
 
-    public Node makeText(String str){       //TODO Allison implement this function
-        Node temp = null;
-        return temp;
-
+    public Node makeText(String str){
+        return doc.createTextNode(str);
     }
 
     @Override
@@ -262,7 +267,82 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     }
 
 
-    //TODO implement the rest of the conditions
+    @Override
+    public LinkedList<Node> visitEqualsCond(XQueryParser.EqualsCondContext ctx){
+        LinkedList<Node> left = visit(ctx.xq(0));
+        LinkedList<Node> right = visit(ctx.xq(1));
+        for(Node l: left){
+            for(Node r: right){
+                if(l.isEqualNode(r)){
+                    Node node = makeText("true");
+                    left.add(node);
+                    return left;
+                }
+            }
+        }
+    }
+
+    @Override
+    public LinkedList<Node> visitSameCond(XQueryParser.SameCondContext ctx){
+        LinkedList<Node> left = visit(ctx.xq(0));
+        LinkedList<Node> right = visit(ctx.xq(1));
+        for(Node l: left){
+            for(Node r: right){
+                if(l.isSameNode(r)){
+                    Node node = makeText("true");
+                    left.add(node);
+                    return left;
+                }
+            }
+        }
+        return new LinkedList<Node>();
+    }
+
+    @Override 
+    public LinkedList<Node> visitEmptyCond(XQueryParser.EmptyCondContext ctx){
+        LinkedList<Node> res = new LinkedList<>();
+        LinkedList<Node> xq = visit(ctx.xq());
+        if(xq.size() == 0){
+            Node node = makeText("true");
+            res.add(node);
+        }
+        return res;
+    }
+
+    @Override
+    public LinkedList<Node> visitAndCond(XQueryParser.AndCondContext ctx){
+        LinkedList<Node> left = visit(ctx.condition(0));
+        LinkedList<Node> right = visit(ctx.condition(1));
+        if(left.size() != 0 && right.size() != 0){
+            Node node = makeText("true");
+            left.add(node);
+            return left;
+        }
+        return new LinkedList<Node>();
+    }
+
+    @Override
+    public LinkedList<Node> visitOrCond(XQueryParser.OrCondContext ctx){
+        LinkedList<Node> left = visit(ctx.condition(0));
+        LinkedList<Node> right = visit(ctx.condition(1));
+        if(left.size() != 0 || right.size() != 0){
+            Node node = makeText("true");
+            left.add(node);
+            return left;
+        }
+        return new LinkedList<Node>();
+    }
+
+    @Override
+    public LinkedList<Node> visitNotCond(XQueryParser.NotCondContext ctx){
+        LinkedList<Node> res = new LinkedList<>();
+        LinkedList<Node> cond = visit(ctx.condition());
+        if(cond.size() == 0){
+            Node node = makeText("true");
+            res.add(node);
+        }
+        return new LinkedList<Node>();
+    }
     
 
     public LinkedList<Node> getChildren(Node node){
@@ -320,7 +400,8 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         db.setIgnoringElementContentWhitespace(true);
         try{
             DocumentBuilder dbuilder = db.newDocumentBuilder();
-            Document doc = dbuilder.parse(xmlFile);
+            //Document 
+            doc = dbuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
             res.add(doc);
         } catch (ParserConfigurationException | SAXException | IOException e){
