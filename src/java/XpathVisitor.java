@@ -23,7 +23,10 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     LinkedList<Node> availNodes = new LinkedList<>();
+
+    Document doc;
     String docName = "";
+
     LinkedList<Node> answer = new LinkedList<>();
     HashMap<String, LinkedList<Node>> contextMap = new HashMap<>();
     Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
@@ -89,8 +92,12 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     
 
     public Node makeElem(String tag, LinkedList<Node> nodes){
-        Document doc = null;
         Node result = doc.createElement(tag);
+
+        for (Node elem : nodes) {
+            result.appendChild(elem.cloneNode(true));
+        }
+
         return result;
     }
 
@@ -141,9 +148,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     }
 
     public Node makeText(String str){
-        Node temp = null;
-        return temp;
-
+        return doc.createTextNode(str);
     }
 
     @Override
@@ -262,7 +267,8 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         db.setIgnoringElementContentWhitespace(true);
         try{
             DocumentBuilder dbuilder = db.newDocumentBuilder();
-            Document doc = dbuilder.parse(xmlFile);
+            //Document 
+            doc = dbuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
             res.add(doc);
         } catch (ParserConfigurationException | SAXException | IOException e){
