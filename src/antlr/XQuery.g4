@@ -35,7 +35,7 @@ rp
     | '@' WORD                                          #attrRP
     | '(' rp')'                                         #parenRP
     | rp'/' rp                                          #childRP
-    | rp'//' rp                                          #descendRP
+    | rp'//' rp                                         #descendRP
     | rp'[' filter ']'                                  #filterPath
     | rp',' rp                                          #commaRP
     ;
@@ -44,9 +44,9 @@ filter
     : rp                                                #rpPF
     | filter AND filter                                 #apPF
     | filter OR filter                                  #orPF
-    | 'not' filter                                        #notPF
+    | 'not' filter                                      #notPF
     | rp'=' rp                                          #equalsPF
-    | rp EQ rp                                       #equalsPF
+    | rp EQ rp                                          #equalsPF
     | rp'==' rp                                         #samePF
     | rp' is ' rp                                       #samePF
     | rp'=' strconst                                    #stringPF
@@ -63,16 +63,16 @@ whereClause
     : 'where' condition ;
 
 condition
-    : xq  '='  xq                  #equalsCond
-    | xq EQ xq                  #equalsCond
-    | xq  '=='  xq                  #sameCond
-    | xq ' is ' xq                  #sameCond
-    | 'empty(' xq ')'               #emptyCond
-    | someClause                    #someCond
-    | '(' xq ')'                    #parenCond
-    | xq AND xq                     #andCond
-    | xq OR xq                      #orCond 
-    | 'not' xq                        #notCond
+    : xq  '='  xq                                       #valueEqualityCond
+    | xq EQ xq                                          #valueEqualityCond
+    | xq  '=='  xq                                      #idEqualityCond
+    | xq ' is ' xq                                      #idEqualityCond
+    | 'empty(' xq ')'                                   #emptyCond
+    | someClause                                        #someCond
+    | '(' xq ')'                                        #parenCond
+    | xq AND xq                                         #andCond
+    | xq OR xq                                          #orCond 
+    | 'not' xq                                          #notCond
     ;
 
 someClause
