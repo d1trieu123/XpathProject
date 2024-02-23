@@ -91,7 +91,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
 
     
 
-    public Node makeElem(String tag, LinkedList<Node> nodes){    //not sure how to implement this
+    public Node makeElem(String tag, LinkedList<Node> nodes){    //TODO Allison implement this function
         Document doc = null;
         Node result = doc.createElement(tag);
         return result;
@@ -143,7 +143,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         return res;
     }
 
-    public Node makeText(String str){       //helper function to make a text node, not sure how to implement 
+    public Node makeText(String str){       //TODO Allison implement this function
         Node temp = null;
         return temp;
 
@@ -220,7 +220,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     public LinkedList<Node> visitSomeCond(XQueryParser.SomeCondContext ctx){
         return visit(ctx.someClause());
     }
-    // I since conditions return true or false, I'm making a LinkedList of 1 node true = true statement while false = empty list
+    // Since conditions return true or false, I'm making a LinkedList of 1 node true = true statement while false = empty list
     // this way you can check if the condition is true or false by checking if the list is empty or not
     @Override
     public LinkedList<Node> visitSomeClause(XQueryParser.SomeClauseContext ctx){ 
