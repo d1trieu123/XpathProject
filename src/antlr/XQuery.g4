@@ -69,10 +69,10 @@ condition
     | xq ' is ' xq                  #sameCond
     | 'empty(' xq ')'               #emptyCond
     | someClause                    #someCond
-    | '(' xq ')'                    #parenCond
-    | xq AND xq                     #andCond
-    | xq OR xq                      #orCond 
-    | 'not' xq                        #notCond
+    | '('condition ')'                    #parenCond
+    |condition AND condition                     #andCond
+    |condition OR condition                      #orCond 
+    | 'not'condition                        #notCond
     ;
 
 someClause

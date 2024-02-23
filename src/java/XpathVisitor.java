@@ -28,6 +28,8 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     HashMap<String, LinkedList<Node>> contextMap = new HashMap<>();
     Stack <HashMap<String, LinkedList<Node>>> contextStack = new Stack<>();
 
+    //XQ LOGIC
+
     @Override
     public LinkedList<Node> visitFlwrXQ(XQueryParser.FlwrXQContext ctx){
         System.out.println("visit for xq " + ctx.getText());
@@ -40,9 +42,11 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         return results;
     }
 
+    // I create this FLWR helper so that I can recursively call it to handle nested for loops
+    // I used a stack so that I can keep track of the context of the variables
     public void FLWR(int i, LinkedList<Node> results, XQueryParser.FlwrXQContext ctx){
-        int forLoops = ctx.forClause().var().size();
-        if(i == forLoops){
+        int forLoops = ctx.forClause().var().size(); 
+        if(i == forLoops){ // if we are at the last for loop, we can start evaluating the rest of the FLWR
             if(ctx.letClause() != null){
                 visit(ctx.letClause());
             }
@@ -55,8 +59,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
             LinkedList<Node> returnNodes = visit(ctx.returnClause());
             results.addAll(returnNodes);
         }
-        else{
-            System.out.println("FOR LOOP " + (i+1));
+        else{  // if we are not at the last for loop, we need to keep going add more variable values to the context
             String var = ctx.forClause().var(i).getText();
             LinkedList<Node> values = visit(ctx.forClause().xq(i));
             for(Node value: values){
@@ -65,7 +68,7 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
                 LinkedList<Node> temp = new LinkedList<>();
                 temp.add(value);
                 contextMap.put(var, temp);
-                if(i+1 <= forLoops){
+                if(i+1 <= forLoops){   // if there are more for loops, keep going
                     FLWR(i+1, results, ctx);
                 }
                 contextMap = contextStack.pop();
@@ -75,43 +78,43 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){
+    public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){         
         String tag = ctx.tagname(0).getText();
         System.out.println("VISIT TAG XQ " + tag);
-        LinkedList<Node> nodes = visit(ctx.xq());
-        Node node = makeElem(tag,nodes);
+        LinkedList<Node> nodes = visit(ctx.xq());     // get the nodes from the xq
+        Node node = makeElem(tag,nodes);            // create the new element and return the new element with the children being the xq nodes
         LinkedList<Node> res = new LinkedList<>();
-        res.add(node);
+        res.add(node);                                          
         return res;
 
     }
 
     
 
-    public Node makeElem(String tag, LinkedList<Node> nodes){
+    public Node makeElem(String tag, LinkedList<Node> nodes){    //TODO Allison implement this function
         Document doc = null;
         Node result = doc.createElement(tag);
         return result;
     }
 
     @Override
-    public LinkedList<Node> visitApXQ(XQueryParser.ApXQContext ctx){
+    public LinkedList<Node> visitApXQ(XQueryParser.ApXQContext ctx){        //just visit the xpath expression 
         System.out.println("VISIT AP XQ " + ctx.getText());
         return visit(ctx.ap());
     }
 
     @Override
-    public LinkedList<Node> visitLetXQ(XQueryParser.LetXQContext ctx){
+    public LinkedList<Node> visitLetXQ(XQueryParser.LetXQContext ctx){      
         System.out.println("VISIT LET XQ " + ctx.getText());
         HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
-        contextStack.push(old);
-        LinkedList<Node> res = visitChildren(ctx);
-        contextMap = contextStack.pop();
+        contextStack.push(old);                     // push the current context to the stack so you can hold the current variables
+        LinkedList<Node> res = visitChildren(ctx);   // visit the children of the let clause
+        contextMap = contextStack.pop();            // pop the context from the stack
         return res;
     }
 
     @Override
-    public LinkedList<Node> visitCommaXQ(XQueryParser.CommaXQContext ctx){
+    public LinkedList<Node> visitCommaXQ(XQueryParser.CommaXQContext ctx){  //copied Xpath logic for comma
         System.out.println("COMMA XQ "  + ctx.xq(0).getText() + " " + ctx.xq(1).getText());
         LinkedList<Node> res = new LinkedList<>();
         LinkedList<Node> left = visit(ctx.xq(0));
@@ -122,14 +125,14 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     }
 
     @Override
-    public LinkedList<Node> visitVarXQ(XQueryParser.VarXQContext ctx){
+    public LinkedList<Node> visitVarXQ(XQueryParser.VarXQContext ctx){  //return the current context's value of the variable
         System.out.println("VISIT VAR " + ctx.var().getText());
         String var = ctx.var().getText();
         return contextMap.get(var);
     }
 
     @Override
-    public LinkedList<Node> visitStrXQ(XQueryParser.StrXQContext ctx){
+    public LinkedList<Node> visitStrXQ(XQueryParser.StrXQContext ctx){  //return the string as a node
 
         String str = ctx.strconst().getText();
         System.out.println("STRING XQ " + str);
@@ -140,24 +143,24 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
         return res;
     }
 
-    public Node makeText(String str){
+    public Node makeText(String str){       //TODO Allison implement this function
         Node temp = null;
         return temp;
 
     }
 
     @Override
-    public LinkedList<Node> visitParenXQ(XQueryParser.ParenXQContext ctx){
+    public LinkedList<Node> visitParenXQ(XQueryParser.ParenXQContext ctx){      //just visit the xq in the parenthesis
         return visit(ctx.xq());
     }
 
     @Override
     public LinkedList<Node> visitSlashXQ(XQueryParser.SlashXQContext ctx){
         System.out.println("CHILD XQ " + ctx.getText());
-        availNodes = visit(ctx.xq());
-        LinkedList<Node> res = new LinkedList<>();
+        availNodes = visit(ctx.xq());   //sets the avaliable nodes to the xq result
+        LinkedList<Node> res = new LinkedList<>();  
         for(Node node: availNodes){
-            LinkedList<Node> children = visit(ctx.rp());
+            LinkedList<Node> children = visit(ctx.rp());   //for each node, visit the rp
             res.addAll(children);
         }
         return res;
@@ -170,27 +173,27 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
     public LinkedList<Node> visitDoubleslashXQ(XQueryParser.DoubleslashXQContext ctx){
         System.out.println("DESCEND XQ " + ctx.getText());
         LinkedList<Node> tmp = visit(ctx.xq());
-        tmp.addAll(getChildren(tmp.get(0)));
-        availNodes = tmp;
+        tmp.addAll(getChildren(tmp.get(0)));        
+        availNodes = tmp;  //set the available nodes to the result of the xq and then all descendants as well
         LinkedList<Node> res = new LinkedList<>();
         for(Node node: tmp){
-            LinkedList<Node> children = visit(ctx.rp());
+            LinkedList<Node> children = visit(ctx.rp()); //for each node in avaliable nodes visit the rp
             res.addAll(children);
         }
         return res;
     }
-
+//CLAUSE LOGIC
     @Override
     public LinkedList<Node> visitForClause(XQueryParser.ForClauseContext ctx){
 
-        return null;
+        return null;        //I think this is handled in the FLWR helper so i dont think these needs further implemnetation 
     }
 
     @Override
     public LinkedList<Node> visitLetClause(XQueryParser.LetClauseContext ctx){
         for(int i =0 ; i<ctx.var().size(); i++){
             String var = ctx.var(i).getText();
-            LinkedList<Node> value = visit(ctx.xq(i));
+            LinkedList<Node> value = visit(ctx.xq(i));      //for each variable, visit the xq and add the value to the context under that variable
             contextMap.put(var, value);
         }
 
@@ -199,13 +202,68 @@ public class XpathVisitor extends XQueryBaseVisitor<LinkedList<Node>>{
 
     @Override
     public LinkedList<Node> visitWhereClause(XQueryParser.WhereClauseContext ctx){
-        return visit(ctx.condition());
-    }
+        return visit(ctx.condition());      //just visit the condition
+    }   
 
     @Override
     public LinkedList<Node> visitReturnClause(XQueryParser.ReturnClauseContext ctx){
-        return visit(ctx.xq());
+        return visit(ctx.xq());             //just visit the xq
     }
+
+//CONDITIONS LOGIC
+    @Override
+    public LinkedList<Node> visitParenCond(XQueryParser.ParenCondContext ctx){
+        return visit(ctx.condition());          //just visit the condition
+    }
+
+    @Override 
+    public LinkedList<Node> visitSomeCond(XQueryParser.SomeCondContext ctx){
+        return visit(ctx.someClause());
+    }
+    // Since conditions return true or false, I'm making a LinkedList of 1 node true = true statement while false = empty list
+    // this way you can check if the condition is true or false by checking if the list is empty or not
+    @Override
+    public LinkedList<Node> visitSomeClause(XQueryParser.SomeClauseContext ctx){ 
+        LinkedList<Node> res = new LinkedList<>();
+        if(evalCond(0, ctx)){  //someClause returns true (LinkedList of Node true) if the condition is true
+            Node node = makeText("true");
+            res.add(node);
+        }
+        return res;
+    }
+
+    public boolean evalCond(int index, XQueryParser.SomeClauseContext ctx){
+        int numCond = ctx.var().size(); //check how many conditions there are
+        // I think you just do the same thing as the FLWR helper, but instead of adding the values to the context, you just check if the condition is true
+        if(index == numCond){
+            if(visit(ctx.condition()).size() != 0)  //after assigning all the variables, check the condition from the context map.
+                return true;
+            }
+        else{
+            String var = ctx.var(index).getText(); //similar to the FLWR helper, get the variable and its values and add to the context map
+            LinkedList<Node> values = visit(ctx.xq(index));
+            for(Node value: values){
+                HashMap<String, LinkedList<Node>> old = new HashMap<>(contextMap);
+                contextStack.push(old);
+                LinkedList<Node> temp = new LinkedList<>();
+                temp.add(value);
+                contextMap.put(var, temp);
+                if(index+1 <= numCond){
+                    if(evalCond(index+1, ctx)){
+                        contextMap = contextStack.pop();
+                        return true;
+                    }
+                }
+                contextMap = contextStack.pop();
+            }
+        }
+        return false;
+        
+    }
+
+
+    //TODO implement the rest of the conditions
+    
 
     public LinkedList<Node> getChildren(Node node){
         LinkedList<Node> children = new LinkedList<>();

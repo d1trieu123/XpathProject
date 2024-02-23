@@ -20,7 +20,7 @@ JVM_INVOCATION=java
 ENTRYPOINT=Main
 
 # change me to the path of your local ANTLR4 jar file. this is the only variable you should have to change
-ANTLR4_JAR=/usr/local/lib/antlr-4.13.1-complete.jar
+ANTLR4_JAR=/home/d1trieu/antlr-4.13.1-complete.jar
 
 
 all:

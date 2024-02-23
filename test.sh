@@ -15,7 +15,7 @@ TEST_QUERIES="$TEST/queries"
 #JAVA_COMPILER_FLAGS= -g
 JVM_INVOCATION=$(which java)
 
-ANTLR4_JAR="/usr/local/lib/antlr-4.13.1-complete.jar"
+ANTLR4_JAR="/home/d1trieu/antlr-4.13.1-complete.jar"
 
 ENTRYPOINT=Main
 
