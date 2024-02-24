@@ -24,7 +24,7 @@ ANTLR4_JAR=/home/d1trieu/antlr-4.13.1-complete.jar
 
 
 all:
-	if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR) ; fi
+	if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR) $(BUILD_DIR)/output ; fi
 	$(JVM_INVOCATION) -cp $(ANTLR4_JAR) org.antlr.v4.Tool $(ANTLR_SRC)/XQuery.g4 -visitor
 	mv $(ANTLR_SRC)/*.interp $(BUILD_DIR)
 	mv $(ANTLR_SRC)/*.tokens $(BUILD_DIR)
