@@ -151,17 +151,28 @@ public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){
     public LinkedList<Node> visitFlwrXQ(XQueryParser.FlwrXQContext ctx){
         System.out.println("visit for xq " + ctx.getText());
 
-        LinkedList<Node> results = new LinkedList<Node>();
+        //LinkedList<Node> results = new LinkedList<Node>();
 
         HashMap<String, LinkedList<Node>> old = new HashMap<String, LinkedList<Node>>(contextMap);
         contextStack.push(old);
 
-        FLWR(0, results, ctx);
-        
+        //FLWR(0, results, ctx);
+        //ctx.
+        visit(ctx.forClause());
+
+        if (ctx.letClause() != null) {
+            visit(ctx.letClause());
+        }
+
+        if (ctx.whereClause() != null) {
+            visit(ctx.whereClause());
+        }
+
+        LinkedList<Node> results = visit(ctx.returnClause());
         System.out.println(results);
 
-
         contextMap = contextStack.pop();
+
         return results;
     }
 
@@ -253,24 +264,42 @@ public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){
 
     @Override
     public LinkedList<Node> visitLetClause(XQueryParser.LetClauseContext ctx){
-
+        /*/
         if (ctx.var().size() != ctx.xq().size()) {
             return null;
         }
 
-        LinkedList<Node> allVals = new LinkedList<Node>();
+        LinkedList<Node> result = new LinkedList<Node>();
 
         for (int i =0 ; i<ctx.var().size(); i++) {
 
             String var = ctx.var(i).WORD().toString();
 
             LinkedList<Node> value = visit(ctx.xq(i));
-            allVals.addAll(value);
+
+            // var known in parent scope, find intersection
+            if (contextMap.keySet().contains(var)) {
+                LinkedList<Node> valsFromParentScope = contextMap.get(var);
+
+                for (int j = 0; j < valsFromParentScope.size(); j++) {
+                    Node candidate = valsFromParentScope.get(j);
+
+                    //if () {
+
+                    //}
+                }
+            }
+            else { // local var
+
+            }
+
+            //allVals.addAll(value);
 
             contextMap.put(var, value);
         }
 
-        return allVals;
+        return result;*/
+        return null;
     }
 
     @Override
@@ -282,6 +311,40 @@ public LinkedList<Node> visitTagXQ(XQueryParser.TagXQContext ctx){
     public LinkedList<Node> visitReturnClause(XQueryParser.ReturnClauseContext ctx){
         return visit(ctx.xq());
     }
+
+/*    @Override
+    public LinkedList<Node> visitSomeClause(XQueryParser.someClause ctx) {
+        HashMap<String, LinkedList<Node>> someVars = new HashMap<String, LinkedList<Node>>();
+
+        LinkedList<String> variables = new LinkedList<String>();
+
+        for (int i = 0; i < ctx.var().size(); i++) {
+            String varName = ctx.var(i).WORD().toString();
+
+            LinkedList<Node> vals = visit(ctx.xq(i));
+
+            someVars.put(varName, vals);
+            variables.add(varName);
+        }
+
+        LinkedList<Node> condSatisfyingNodes = visit(ctx.condition());
+
+        LinkedList<Node> results = new LinkedList<Node>();
+
+        for (int i = 0; i < variables.size(); i++) {
+            LinkedList<Node> currentNodes = someVars.get(variables.get(i));
+
+            for (int j = 0; j < currentNodes.size(); j++) {
+                Node candidate = currentNodes.get(j);
+
+                if (condSatisfyingNodes.contains(candidate)) {
+                    results.add(candidate);
+                }
+            }
+        }
+
+        return results;
+    }*/
 
 
 
